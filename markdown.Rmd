@@ -1,0 +1,13 @@
+---
+title: "Quantitative Genetics in R"
+output: html_document
+---
+
+## Setup (to be done prior to module)
+
+For this module you will need to download base R and rstudio (if you don't already have them). For this lesson we will be using R 3.4.3 "Kite-Eating Tree". There are distributions of base R for all operating major operating systems.
+
+**Download R first**
+-MAC OS users go here: https://cran.r-project.org/bin/macosx/R-3.4.3.pkg
+-Windows users go here: https://cran.r-project.org/bin/windows/base/
+-Linux users go here: 
