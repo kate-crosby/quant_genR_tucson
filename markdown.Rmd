@@ -38,7 +38,7 @@ Rstudio is an IDE (integrated development environment) for R, and it helps
 
 # **Download Data Set (to be done prior to module)**
 
-For this module we will be using a Picea glauca (white spruce) dataset of 15 phenotypes, 1694 individual trees, and some 6000 SNP markers. The markers have no linkage map, nor does the data set include pedigree based information. Picea glauca like most conifers, has a very large estimated genome size of 16.15 pg, and 12 autosomal chromosomes. White spruce is widespread in the Boreal and used mostly in residential home construction in Canada and paper making. 
+For this module we will be using a Picea glauca (white spruce) dataset of 15 phenotypes, 1694 individual trees, and some 6000 SNP markers. The markers have no linkage map, nor does the data set include pedigree based information. Picea glauca like most conifers, has a very large estimated genome size of 16.15 pg or 2100cM (estimated genetic map size), and 12 autosomal chromosomes. This means that we have very low marker coverage - this is further detailed in the paper (Beaulieu et al. 2014). White spruce is widespread in the Boreal and used mostly in residential home construction in Canada and paper making. 
 
 We will use a slightly altered version of the original dataset for the sake of time; however, the original dataset and associated paper by Beaulieu et al. (2014) lives here if anyone is interested in taking a look.
 
@@ -61,5 +61,25 @@ rm(list=ls())
 
 ls()
 ```
-  
-Now that are workspace is a blank space we can start working.
+
+You can type these directly in the console, or preferrably in our script file. If we type commands in our console, they will be more difficult to recall or remember.
+
+Now that are workspace is a blank space we can start working with our spruce dataset. First we will load the phenotypes into the workspace:
+
+```{r}
+phenos <- read.table("S1.txt", header = TRUE, sep="\t")
+```
+
+If you're new to R, you'll notice that when you executed this command on the console - nothing happened. That's generally good news, as it means your command was successfully executed. You'll notice that if you type ```ls()``` an object named ```"phenos"```. 
+
+The first thing to do before examining any data is examine it and visualize it. R has several useful commands to do this. First, let's figure out the size of our data. 
+
+```{r}
+dim(phenos)
+```
+
+The output of this command tells us that we have an array of 1694 rows x 15 columns. The rows always come first, columns second in R. That's great; however, we would like to get a better picture of the data. We'll do that with the command ```str()``` or the structure command.
+
+```{r}
+str(phenos)
+```
