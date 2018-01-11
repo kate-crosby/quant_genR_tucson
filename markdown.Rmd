@@ -3,7 +3,8 @@ title: "Quantitative Genetics in R"
 output: html_document
 ---
 
-##Introduction
+## Introduction
+
 For this module we will be using R and Rstudio. The lesson assumes no prior knowledge of R, but some experience may be helpful to some learners. At the end of the lesson, learners will be able to:
 
 -Open and type commands into R and/or Rstudio, and have them executed in the console
