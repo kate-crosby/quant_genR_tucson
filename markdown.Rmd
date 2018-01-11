@@ -33,7 +33,9 @@ For this module you will need to download base R and rstudio (if you don't alrea
 
 # **Download RStudio (to be done prior to module)**
   
-Rstudio is an IDE (integrated development environment) for R, and it helps
+Rstudio is an IDE (integrated development environment) for R, and it streamlines writing of scripts, project management, and plotting - click the link below and choose "Rstudio desktop" (free version) and choose your OS version:
+
+https://www.rstudio.com/products/rstudio/download/#download
 
 
 # **Download Data Set (to be done prior to module)**
@@ -45,7 +47,7 @@ We will use a slightly altered version of the original dataset for the sake of t
 http://datadryad.org/resource/doi:10.5061/dryad.6rd6f
 
 
-# Start workshop
+# Part 1: Getting used to and oriented to R
 
 ### **Open up R**
 Since this is the first time we've opened R let's list the objects in our
@@ -63,6 +65,8 @@ ls()
 ```
 
 You can type these directly in the console, or preferrably in our script file. If we type commands in our console, they will be more difficult to recall or remember.
+
+## Load the data and understand its structure
 
 Now that are workspace is a blank space we can start working with our spruce dataset. First we will load the phenotypes into the workspace:
 
@@ -83,3 +87,57 @@ The output of this command tells us that we have an array of 1694 rows x 15 colu
 ```{r}
 str(phenos)
 ```
+
+This not only gives us the dimensions of the data, the datatype we are dealing with, the column names, and the column classes. What does ```str()``` mean though? We can ask R. Type the command below for any function and you'll get the help file to pop up with any arguments that might be contained within that fuction.
+
+```{r}
+?str()
+```
+
+There's also another function ```summary()``` which produces a brief summary of all data within our ```data.frame()``` columns.
+
+```{r}
+summary(phenos)
+```
+
+The ```summary()``` can be very useful for figuring out if there's a difference between mean and median values for example. 
+
+## Phenotypic correlations
+
+Since phenotypic correlations are important to consider in multivariate breeders' selection we can produce this matrix in R.
+
+```{r}
+cor(phenos)
+```
+
+An error is generated ```Error in cor(phenos) : x must be numeric```. If you remember from the ```str``` and ```summary``` commands, one of the columns is not numeric.
+
+If we re-execute our command, this time without that column, it should work. We can do this with indexing. 
+
+```{r}
+cor(phenos[,-1])
+```
+
+We can exclude multiple columns by using the combine function ```c()```
+
+```{r}
+cor(phenos[,-c(1:3)])
+cor(phenos[,-c(1,4:9,10)])
+```
+
+Let's generate the phenotypic covariance matrix, that we could actually use in a breeding program.
+
+```{r}
+pheno_covar <- cov(phenos[,-c(1:3)])
+```
+
+## Visualize the data
+
+R comes with numerous helpful commands for plotting and visualizing data. For our phenotypic dataset, let's use a couple basic plots to get a sense of our trait data
+
+```{r}
+hist(phenos$cryst)
+
+```
+
+## Using packages 
