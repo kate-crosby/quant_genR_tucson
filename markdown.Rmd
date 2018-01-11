@@ -102,11 +102,11 @@ summary(phenos)
 
 The ```summary()``` can be very useful for figuring out if there's a difference between mean and median values for example. 
 
-## Phenotypic correlations
+## Phenotypic correlations and phenotypic covariance matrix
 
 Since phenotypic correlations are important to consider in multivariate breeders' selection we can produce this matrix in R.
 
-```{r}
+```{r, eval=FALSE}
 cor(phenos)
 ```
 
@@ -129,6 +129,7 @@ Let's generate the phenotypic covariance matrix, that we could actually use in a
 
 ```{r}
 pheno_covar <- cov(phenos[,-c(1:3)])
+pheno_cor <- cor(phenos[,-c(1:3)])
 ```
 
 ## Visualize the data
@@ -137,7 +138,9 @@ R comes with numerous helpful commands for plotting and visualizing data. For ou
 
 ```{r}
 hist(phenos$cryst)
-
+plot(phenos$coars ~ phenos$cryst)
+pairs(pheno_cor)
 ```
 
 ## Using packages 
+One of the other positives with using R is that its open-source community contributes many pacakges. A package is a set of functions contributed by a/many users for a specific area of study. Packages may have dependencies on other packages. R has a very active community, and there are many thousands of packages that users can take advantage of.
