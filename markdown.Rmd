@@ -3,11 +3,61 @@ title: "Quantitative Genetics in R"
 output: html_document
 ---
 
+##Introduction
+For this module we will be using R and Rstudio. The lesson assumes no prior knowledge of R, but some experience may be helpful to some learners. At the end of the lesson, learners will be able to:
+
+-Open and type commands into R and/or Rstudio, and have them executed in the console
+
+-How to get help with R errors or warnings
+
+-Have an understanding that there are user/community contributions called 'packages' that can help with specific areas
+
+-How to calculate LD for a set of markers and individuals
+
+-How to calculate breeding values
+
+-How to calculate heritability (broad and narrow sense)
+
+
 ## Setup (to be done prior to module)
 
 For this module you will need to download base R and rstudio (if you don't already have them). For this lesson we will be using R 3.4.3 "Kite-Eating Tree". There are distributions of base R for all operating major operating systems.
 
-**Download R first**
+**Download R first (to be done prior to module)**
 -MAC OS users go here: https://cran.r-project.org/bin/macosx/R-3.4.3.pkg
+
 -Windows users go here: https://cran.r-project.org/bin/windows/base/
--Linux users go here: 
+
+
+# **Download RStudio (to be done prior to module)**
+  
+Rstudio is an IDE (integrated development environment) for R
+
+
+# **Download Data Set (to be done prior to module)**
+
+For this module we will be using a Picea glauca (white spruce) dataset of 15 phenotypes, 1694 individual trees, and some 6000 SNP markers. The markers have no linkage map, nor does the data set include pedigree based information. Picea glauca like most conifers, has a very large estimated genome size of 16.15 pg, and 12 autosomal chromosomes. White spruce is widespread in the Boreal and used mostly in residential home construction in Canada and paper making. 
+
+We will use a slightly altered version of the original dataset for the sake of time; however, the original dataset and associated paper by Beaulieu et al. (2014) lives here if anyone is interested in taking a look.
+
+http://datadryad.org/resource/doi:10.5061/dryad.6rd6f
+
+
+# Start workshop
+
+### **Open up R**
+Since this is the first time we've opened R let's list the objects in our
+workspace:
+```{r}
+ls()
+```
+
+There should be no objects in your workspace. If there are you can wipe the workspace in rstudio using the tiny *broom* icon in the environment panel. Or, you can simply type this command (**NOTE only use this command if you are certain you want to wipe all objects from the workspace**). 
+
+```{r}
+rm(list=ls())
+
+ls()
+```
+  
+Now that are workspace is a blank space we can start working.
