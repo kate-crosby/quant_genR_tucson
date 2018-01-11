@@ -49,7 +49,7 @@ http://datadryad.org/resource/doi:10.5061/dryad.6rd6f
 
 # Part 1: Getting used to and oriented to R
 
-### **Open up R**
+### **Open up RStudio**
 Since this is the first time we've opened R let's list the objects in our
 workspace:
 ```{r}
@@ -143,4 +143,69 @@ pairs(pheno_cor)
 ```
 
 ## Using packages 
-One of the other positives with using R is that its open-source community contributes many pacakges. A package is a set of functions contributed by a/many users for a specific area of study. Packages may have dependencies on other packages. R has a very active community, and there are many thousands of packages that users can take advantage of.
+One of the other positives with using R is that its open-source community contributes many pacakges. A package is a set of functions contributed by a/many users for a specific area of study. Packages may have dependencies on other packages. R has a very active community, and there are many thousands of packages that users can take advantage of, the field of genetics is no exception.
+
+For this lesson, we will use a couple of pkgs ```rrBLUP``` from Jeff Endelman's lab at the University of Wisconsin Madison. We will install the package and load it into the R workspace with the function:
+
+```{r, eval = FALSE}
+install.packages("rrBLUP")
+library(rrBLUP)
+```
+
+If we ever want to read more about a package we can use the ```citation``` function, that is: ```citation(rrBLUP)``` to read more about who generated the package or ```help()```, that is: ```help(rrBLUP)```.
+
+```{r}
+citation("rrBLUP")
+help(rrBLUP)
+```
+
+
+# Part 2: Quantitative genetics in R
+
+## Load the genotype data
+
+## Compute the additive matrix
+
+## Get an estimate of population structure
+
+## Perform a GWAS 
+
+
+# Lesson "Easter Eggs" - 
+
+Sometimes it's useful to gather scripts that you can use or modify for the task at hand. A few of these are provided below, but we won't cover them today. You may want to try it out at a later date.
+
+## Recode nucleotide data to a numeric format
+
+Recoding SNP nuleotide data is one of the things that is a common requisite for many packages for quantitative and population genetics. E.g. taking "AA", "CC", "AC", and translating it to 2, 1, 0 or 1,0,-1. There are other formats too. The function below can do this quickly (try it out later if you'd like).
+
+The original spruce dataset from Data Dryad is loaded into the workspace, we define our function, and then we apply it to the ```genos```.
+
+```{r}
+genos <- read.table("S2.txt", header = TRUE, sep="\t", stringsAsFactors = TRUE)
+
+genos[1:5,1:5]
+
+recode.SNP.rrBLUP <- function(x) {
+  alleles <- unique(x)
+  y <- rep(0,length(x))
+  y[which(x==alleles[1])] <- -1
+  y[which(x==alleles[2])] <- 0
+  y[which(x==alleles[3])] <- 1
+  y[which(x=="N")] <- NA
+  return(y)
+}
+
+
+X <- apply(genos[,-1],2,recode.SNP.rrBLUP)
+
+X[1:5,1:5]
+```
+
+If you want the 0, 1, 2 format that is often the required by other programs, you can simply:
+
+```{r}
+Xadd <- X + 1
+
+Xadd[1:5,1:5]
+```
