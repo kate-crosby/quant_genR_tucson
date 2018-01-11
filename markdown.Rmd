@@ -20,11 +20,12 @@ For this module we will be using R and Rstudio. The lesson assumes no prior know
 -How to calculate heritability (broad and narrow sense)
 
 
-## Setup (to be done prior to module)
+# Setup (to be done prior to module)
 
 For this module you will need to download base R and rstudio (if you don't already have them). For this lesson we will be using R 3.4.3 "Kite-Eating Tree". There are distributions of base R for all operating major operating systems.
 
-**Download R first (to be done prior to module)**
+# **Download R first (to be done prior to module)**
+
 -MAC OS users go here: https://cran.r-project.org/bin/macosx/R-3.4.3.pkg
 
 -Windows users go here: https://cran.r-project.org/bin/windows/base/
@@ -32,7 +33,7 @@ For this module you will need to download base R and rstudio (if you don't alrea
 
 # **Download RStudio (to be done prior to module)**
   
-Rstudio is an IDE (integrated development environment) for R
+Rstudio is an IDE (integrated development environment) for R, and it helps
 
 
 # **Download Data Set (to be done prior to module)**
