@@ -269,7 +269,7 @@ Recoding SNP nuleotide data is one of the things that is a common requisite for 
 
 The original spruce dataset from Data Dryad is loaded into the workspace, we define our function, and then we apply it to the ```genos```.
 
-```{r, eval="FALSE"}
+```{r, eval=FALSE}
 genos <- read.table("S2.txt", header = TRUE, sep="\t", stringsAsFactors = TRUE)
 
 genos[1:5,1:5]
@@ -292,7 +292,7 @@ X[1:5,1:5]
 
 If you want the 0, 1, 2 format that is often the required by other programs, you can simply:
 
-```{r}
+```{r, eval = FALSE}
 Xadd <- X + 1
 
 Xadd[1:5,1:5]
