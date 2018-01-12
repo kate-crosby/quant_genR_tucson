@@ -181,17 +181,20 @@ marker.map <- marker.map[,-1]
 
 What happens if we use the functions above to get an idea of the data structure? Type them in and see what happens.
 
-Could we use our indexing technique from the phenotypic correlations to get an idea. On your own see if you can print a small subset of the object to get an idea of its structure.
+Could we use our indexing technique from the phenotypic correlations to get an idea? 
+
+On your own see if you can print a small subset of the object to get an idea of its structure.
 
 ## Compute the additive matrix and impute markers
 
 We have no information on pedigree with this dataset, and as such we really can't differentiate between IBD (identity-by-descent) and IBS (identity-by-state). The more SNPs, the more likely IBS starts to approximates IBD. Nonetheless, we'll proceed with this toy example. We'll use the function ```A.mat``` from the ```rrBLUP``` package we previously loaded. Let's first look at what this function does by typing its name in the console, and we can also find out more by doing what?
 
-```{r, eval=FALSE}
-Amat
+```{r}
+library(rrBLUP)
 A.mat.spruce <- A.mat(genos.rrBLUP, min.MAF=0.05,
                       impute.method="mean", 
                       return.imputed=TRUE)
+dim(A.mat.spruce)
 ```
 
 You'll notice here that I asked also for the option to return an imputed matrix based on the mean of each marker column. This is for downstream analyses, as many GS (genomic selection) and GWAS canned packages/functions require no missing data. I also chose the method that just happens to be the quickest for imputation - NOT THE MOST ACCURATE.
@@ -200,18 +203,63 @@ What type of object is retured? It's a list, which is a special data type that a
 
 We can ```unlist()``` both of those objects for different purposes. For the next step we'll want to use the imputed marker matrix.
 
-```{r, eval=FALSE}
+```{r}
 marker_imputed <- unlist(A.mat.spruce$imputed)
 ```
 
 ## Get an estimate of population structure
 
-We don't know much about this dataset
+We don't know much about this dataset, save that it's a bunch of open pollinated individual trees in Canada, whose parents originated from three different latitudes/altitudes in the Province of Quebec and are included in the data set. 
+
+While kinship is probably the most important type of structure to consider it's useful to get an estimate of population structure nonetheless. We will use principal component analysis (PCA), not to be confused with principal co-ordinate analysis (PCoA). Here we are using one of the base functions for principal co-ordinate analysis, but for larger dataset there are other options: EIGENSTRAT, flash-pca, SNPRelate (another R package), and many more.
+
+We will use another nice plotting library to look at our PCs - ggplot2. What do you notice about the plot that strikes you given the limited information you have on the lines?
+
+
+```{r, eval=FALSE}
+pca.spruce <- prcomp(marker_imputed)
+str(pca.spruce)
+
+library(ggplot2)
+PCi<-data.frame(pca.spruce$x)
+ggplot(PCi,aes(x=PC1,y=PC2)) +
+   geom_point(size=3,alpha=0.5)
+
+ggplot(PCi,aes(x=PC1,y=PC2)) +
+   geom_point(size=3,alpha=0.5, color="orange") + theme_classic()
+```
+
 
 ## Perform a GWAS 
+Even though we have a pretty good estimate of coancestry and population structure, and it's normally a good idea to include these in GWAS, here we will perform a simple GWAS due to the local computation of this exercise. If you would like, you can try including the coancestry matrix and the PCs in your own GWAS. We'll choose the tree height from 1997, at 22 years of age, and include the tree id in a ```data.frame```.
+
+```{r}
+?GWAS
+pheno <- read.table("S1.txt", header=TRUE)
+h97 <- data.frame(pheno$Tree, pheno$h97)
+markerT <- data.frame(t(marker_imputed))
+colnames(markerT) <- h97$pheno.Tree
+genogwas <- marker.map[marker.map$Marker_Name %in% rownames(markerT),]
+genogwas <- data.frame(genogwas, markerT)
+```
+
+Ok, now let's run our GWAS, we'll remove the default min.MAF = 0.05, since we already did this when we calculated the additive matrix.
+
+```{r, eval=FALSE}
+GWAS(pheno = h97, geno = genogwas, 
+                   min.MAF = 0.05, 
+                   K = A.mat.spruce$A,
+                   n.core = 4,
+                   P3D = TRUE,
+                   plot = TRUE)
+
+```
 
 
-# Lesson "Easter Eggs" - 
+
+
+
+# Lesson "Easter Eggs" (not actually covered in the lesson) 
 
 Sometimes it's useful to gather scripts that you can use or modify for the task at hand. A few of these are provided below, but we won't cover them today. You may want to try it out at a later date.
 
@@ -221,7 +269,7 @@ Recoding SNP nuleotide data is one of the things that is a common requisite for 
 
 The original spruce dataset from Data Dryad is loaded into the workspace, we define our function, and then we apply it to the ```genos```.
 
-```{r}
+```{r, eval="FALSE"}
 genos <- read.table("S2.txt", header = TRUE, sep="\t", stringsAsFactors = TRUE)
 
 genos[1:5,1:5]
@@ -252,4 +300,6 @@ Xadd[1:5,1:5]
 
 
 ## GWAS by brute force - with help from R packages
+
+Caution: only use this if you're fairly certain you have little to no population structure or shared ancestry. It's fast, and it's also useful because it shows you the simple linear model mechanics of GWAS! 
 
