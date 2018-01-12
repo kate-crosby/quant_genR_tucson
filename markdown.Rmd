@@ -9,15 +9,19 @@ For this module we will be using R and Rstudio. The lesson assumes no prior know
 
 -Open and type commands into R and/or Rstudio, and have them executed in the console
 
--How to get help with R errors or warnings
+-Know how to get help with R errors or warnings
 
 -Have an understanding that there are user/community contributions called 'packages' that can help with specific areas
 
--How to calculate LD for a set of markers and individuals
+-Calculate the phenotypic covariance matrix
 
--How to calculate breeding values
+-Compute the additive co-ancestry matrix a set of markers
 
--How to calculate heritability (broad and narrow sense)
+-Impute missing marker data
+
+-Estimate population structure using a PCA
+
+-Run a GWAS for a trait of interest
 
 
 # Setup (to be done prior to module)
@@ -66,7 +70,7 @@ ls()
 
 You can type these directly in the console, or preferrably in our script file. If we type commands in our console, they will be more difficult to recall or remember.
 
-## Load the data and understand its structure
+## Load the phenotype data and understand its structure
 
 Now that are workspace is a blank space we can start working with our spruce dataset. First we will load the phenotypes into the workspace:
 
@@ -164,9 +168,45 @@ help(rrBLUP)
 
 ## Load the genotype data
 
-## Compute the additive matrix
+R can read in different data types, and R packages expand that capability. Above, we read in a tab-delimited text file and it's not uncommon to read in csv (comma separated value files). There are even numerous packages that allow you to read in native '.xls' and/or '.xlsx' files. 
+
+We will load an '.RData' file, which has been pre-processed in advance, which contains a single object ```genos```, however note that RData files can contain multiple objects if you choose. We'll also load the linkage map (this is a fake made up linkage map, with a 13th chromosome for one of the organelles or unknown SNPs).
+
+```{r}
+load("genos.RData")
+dim(genos.rrBLUP)
+marker.map <- read.csv("map.csv", header = TRUE)
+marker.map <- marker.map[,-1]
+```
+
+What happens if we use the functions above to get an idea of the data structure? Type them in and see what happens.
+
+Could we use our indexing technique from the phenotypic correlations to get an idea. On your own see if you can print a small subset of the object to get an idea of its structure.
+
+## Compute the additive matrix and impute markers
+
+We have no information on pedigree with this dataset, and as such we really can't differentiate between IBD (identity-by-descent) and IBS (identity-by-state). The more SNPs, the more likely IBS starts to approximates IBD. Nonetheless, we'll proceed with this toy example. We'll use the function ```A.mat``` from the ```rrBLUP``` package we previously loaded. Let's first look at what this function does by typing its name in the console, and we can also find out more by doing what?
+
+```{r, eval=FALSE}
+Amat
+A.mat.spruce <- A.mat(genos.rrBLUP, min.MAF=0.05,
+                      impute.method="mean", 
+                      return.imputed=TRUE)
+```
+
+You'll notice here that I asked also for the option to return an imputed matrix based on the mean of each marker column. This is for downstream analyses, as many GS (genomic selection) and GWAS canned packages/functions require no missing data. I also chose the method that just happens to be the quickest for imputation - NOT THE MOST ACCURATE.
+
+What type of object is retured? It's a list, which is a special data type that allows the storing of different object types, of different lengths. 
+
+We can ```unlist()``` both of those objects for different purposes. For the next step we'll want to use the imputed marker matrix.
+
+```{r, eval=FALSE}
+marker_imputed <- unlist(A.mat.spruce$imputed)
+```
 
 ## Get an estimate of population structure
+
+We don't know much about this dataset
 
 ## Perform a GWAS 
 
@@ -209,3 +249,7 @@ Xadd <- X + 1
 
 Xadd[1:5,1:5]
 ```
+
+
+## GWAS by brute force - with help from R packages
+
