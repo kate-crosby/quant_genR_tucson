@@ -231,7 +231,7 @@ ggplot(PCi,aes(x=PC1,y=PC2)) +
 
 
 ## Perform a GWAS 
-Even though we have a pretty good estimate of coancestry and population structure, and it's normally a good idea to include these in GWAS, here we will perform a simple GWAS due to the local computation of this exercise. If you would like, you can try including the coancestry matrix and the PCs in your own GWAS. We'll choose the tree height from 1997, at 22 years of age, and include the tree id in a ```data.frame```.
+Even though we have a pretty good estimate of coancestry and population structure, and it's normally a good idea to include these in GWAS, here we will perform a GWAS with kinship included as the additive co-ancestry GWAS due to the local computation limits of this exercise. If you would like, you can try including the coancestry matrix (I have) and the PCs in your own GWAS. We'll choose the tree height from 1997, at 22 years of age, and include the tree id in a ```data.frame```.
 
 ```{r}
 ?GWAS
