@@ -290,7 +290,7 @@ X <- apply(genos[,-1],2,recode.SNP.rrBLUP)
 X[1:5,1:5]
 ```
 
-If you want the 0, 1, 2 format that is often the required by other programs, you can simply:
+If you want the 0, 1, 2 format that is often the required by other programs, you can simply (this is required for SNPRelate and PLINK uses it too):
 
 ```{r}
 Xadd <- X + 1
@@ -298,8 +298,28 @@ Xadd <- X + 1
 Xadd[1:5,1:5]
 ```
 
+## Heritability and response to selection
 
-## GWAS by brute force - with help from R packages
+The authors provide estimates of narrow-sense heritability in their paper in Table 1 (Beaulieu et al. 2014), but don't provide details on location, environment, or pedigree. As such, we can't calculate heritability using a mixed model or linear model approach. Fortunately, we can estimate the heritability of single traits based on markers alone, by making use of the additive co-ancestry matrix that we've calculated already in the lesson above.
 
-Caution: only use this if you're fairly certain you have little to no population structure or shared ancestry. It's fast, and it's also useful because it shows you the simple linear model mechanics of GWAS! 
+```{r, eval = FALSE}
+library(heritability)
+A <- A.mat.spruce$A
+colnames(A) <- pheno$Tree
+rownames(A) <- pheno$Tree
+
+h2_h97 <- marker_h2(pheno$h97, pheno$Tree, K=A)
+
+h2_h97$h2
+```
+
+Since we have the narrow sense heritability (h^2^), and we have the phenotypic variances (V_p_), we can easily calculate the additive variance (V_a_) of each of the trait, by re-arranging the equation h^2^ = V_a_/V_p_ to V_a_= h^2^ * V_p_. Note that the function `{r}marker_h2` calculates both as well, we are merely going through the motions here to understand Gmatrix construction. We can also use the h^2^ in assessing the response to various selection coefficients.
+
+```{r, eval=FALSE}
+va_h97 <- h2_h97$h2 * var(pheno$h97)
+
+S = 10
+R = h2_h97$h2 * S
+R
+```
 
