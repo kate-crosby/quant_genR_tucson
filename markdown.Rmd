@@ -313,7 +313,7 @@ h2_h97 <- marker_h2(pheno$h97, pheno$Tree, K=A)
 h2_h97$h2
 ```
 
-Since we have the narrow sense heritability (h^2^), and we have the phenotypic variances (V_p_), we can easily calculate the additive variance (V_a_) of each of the trait, by re-arranging the equation h^2^ = V_a_/V_p_ to V_a_= h^2^ * V_p_. Note that the function `{r}marker_h2` calculates both as well, we are merely going through the motions here to understand Gmatrix construction. We can also use the h^2^ in assessing the response to various selection coefficients.
+Since we have the narrow sense heritability (h^2^), and we have the phenotypic variances (Vp), we can easily calculate the additive variance (Va) of each of the trait, by re-arranging the equation h^2^ = Va/Vp to Va= h^2^ * Vp. Note that the function `marker_h2` calculates both as well, we are merely going through the motions here to understand Gmatrix construction. We can also use the h^2^ in assessing the response to various selection coefficients.
 
 ```{r, eval=FALSE}
 va_h97 <- h2_h97$h2 * var(pheno$h97)
